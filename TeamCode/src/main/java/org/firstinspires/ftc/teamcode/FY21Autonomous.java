@@ -45,7 +45,7 @@ public class FY21Autonomous extends LinearOpMode{
         while (opModeIsActive()) {
 
             if (currentstep == 0) {
-                //Drive forward to launch line
+                //Drive forward up to launch line without crossing
                 TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
                 sleep(2300);//2200
                 //stop
@@ -73,7 +73,13 @@ public class FY21Autonomous extends LinearOpMode{
             }
 
             if (currentstep == 2) {
-                //Stop/Park
+                //Drive onto launch line
+                TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
+                sleep(700);
+                //stop
+                TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
+                sleep(500);
+                currentstep ++;
             }
     }
 }}
