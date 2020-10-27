@@ -74,6 +74,8 @@ public class FY21TeleOp extends OpMode {
             BottomRight.setPower(Bottom_Right_Power);
             BottomLeft.setPower(Bottom_Left_Power);
 
+            //This piece of code means that the robot will launch one ring when you press the y button
+            //Then after 1000 milliseconds it will turn the power off
             if (gamepad2.y) {
             Launcher.setPower(0.5);
             sleep(1000);
