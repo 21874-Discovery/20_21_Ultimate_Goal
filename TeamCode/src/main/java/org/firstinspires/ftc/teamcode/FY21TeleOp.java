@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import static android.os.SystemClock.sleep;
+
 @TeleOp(name = "TeleOp_Code", group = "team")
 public class FY21TeleOp extends OpMode {
 
@@ -60,7 +62,7 @@ public class FY21TeleOp extends OpMode {
               Bottom_Left_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
               Bottom_Right_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
 
-            {
+
             // 
             Top_Left_Power = Range.clip(Top_Left_Power,-1,1);
             Top_Right_Power = Range.clip(Top_Right_Power,-1,1);
@@ -71,7 +73,19 @@ public class FY21TeleOp extends OpMode {
             TopRight.setPower(Top_Right_Power);
             BottomRight.setPower(Bottom_Right_Power);
             BottomLeft.setPower(Bottom_Left_Power);
+
+            if (gamepad2.y) {
+            Launcher.setPower(0.5);
+            sleep(1000);
+            Launcher.setPower(0);
         }
+            if (!gamepad2.y) {
+            Launcher.setPower(0);
+
+         
+        }
+
+
 
 
 
