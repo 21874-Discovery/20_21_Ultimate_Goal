@@ -76,16 +76,40 @@ public class FY21TeleOp extends OpMode {
 
             //This piece of code means that the robot will launch one ring when you press the y button
             //Then after 1000 milliseconds it will turn the power off
-            if (gamepad2.y) {
-            Launcher.setPower(0.5);
-            sleep(1000);
-            Launcher.setPower(0);
-        }
-            if (!gamepad2.y) {
-            Launcher.setPower(0);
+            //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
+            if (gamepad2.dpad_up) {
+                Launcher.setPower(0.5);
+                sleep(1000);
+                Launcher.setPower(0);
 
-         
-        }
+                }
+            //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
+            if (gamepad2.dpad_down) {
+                Launcher.setPower(-0.5);
+                sleep(1000);
+                Launcher.setPower(0);
+
+                }
+            //I chose these buttons because it reminded me of a stoplight - which has red as stop, green as go
+            //and yellow in the reverse for unjamming the jammed robot in the Pickup
+            if (gamepad2.a) {
+                Pickup.setPower(0.5);
+
+                }
+
+            if (gamepad2.y) {
+                Pickup.setPower(-0.5);
+
+
+                }
+
+            if (gamepad2.b) {
+                Pickup.setPower(0);
+
+
+                }
+
+
 
 
 
