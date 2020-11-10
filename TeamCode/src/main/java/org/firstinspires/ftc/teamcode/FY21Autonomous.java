@@ -96,6 +96,16 @@ public class FY21Autonomous extends LinearOpMode{
                     Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     Launcher.setPower(0);
                     //Move left
+                    TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                    TopLeft.setTargetPosition(700);
+                    TopRight.setTargetPosition(700);
+                    BackLeft.setTargetPosition(700);
+                    BackRight.setTargetPosition(700);
+
                     TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -108,6 +118,16 @@ public class FY21Autonomous extends LinearOpMode{
 
             if (currentstep == 2) {
                 //Drive onto launch line
+                TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                TopLeft.setTargetPosition(700);
+                TopRight.setTargetPosition(700);
+                BackLeft.setTargetPosition(700);
+                BackRight.setTargetPosition(700);
+
                 TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
