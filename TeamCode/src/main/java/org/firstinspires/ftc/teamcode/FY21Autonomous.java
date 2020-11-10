@@ -74,10 +74,12 @@ public class FY21Autonomous extends LinearOpMode{
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
                 //stop
-                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
+                {
+                    telemetry.addData("encoder-fwd-left", TopLeft.getCurrentPosition() + "  busy=" + TopLeft.isBusy());
+                    telemetry.update();
+                    idle();
+                }
                 TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
                 currentstep ++;
             }
@@ -100,10 +102,6 @@ public class FY21Autonomous extends LinearOpMode{
                     BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopLeft.setPower(-0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(0.5);
                     //stop
-                    TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
                 }
             }
@@ -116,10 +114,6 @@ public class FY21Autonomous extends LinearOpMode{
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
                 //stop
-                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
                 currentstep ++;
             }
