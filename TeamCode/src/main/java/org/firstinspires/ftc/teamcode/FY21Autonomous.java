@@ -17,6 +17,7 @@ public class FY21Autonomous extends LinearOpMode{
     DcMotor BackLeft;
     DcMotor Launcher;
     DcMotor Pickup;
+    DcMotor Angler;
 
     int currentstep = 0;
 
@@ -41,44 +42,85 @@ public class FY21Autonomous extends LinearOpMode{
         Pickup =hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        Angler = hardwareMap.dcMotor.get("A");
+        Angler.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        // reset encoder counts kept by motors.
+        TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // set motors to run forward for 5000 encoder counts.
+        TopLeft.setTargetPosition(5000);
+        TopRight.setTargetPosition(5000);
+        BackLeft.setTargetPosition(5000);
+        BackRight.setTargetPosition(5000);
+        Launcher.setTargetPosition(5000);
+        Pickup.setTargetPosition(5000);
+        Angler.setTargetPosition(5000);
+
         waitForStart();
         while (opModeIsActive()) {
 
             if (currentstep == 0) {
                 //Drive forward up to launch line without crossing
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
-                sleep(2300);//2200
                 //stop
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
-                sleep(500);
                 currentstep ++;
             }
 
             if (currentstep == 1) {
                 //Launch rings
                 for (int i = 0; i < 3; i++) {
+                    //reset encoder every loop
+                    Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     //Launch 1 ring
+                    Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     Launcher.setPower(1);
-                    sleep(500);
                     //stop
+                    Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     Launcher.setPower(0);
-                    sleep(500);
                     //Move left
+                    TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopLeft.setPower(-0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(0.5);
-                    sleep(1000);
                     //stop
+                    TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
-                    sleep(500);
                 }
             }
 
             if (currentstep == 2) {
                 //Drive onto launch line
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0.5); TopRight.setPower(-0.5); BackLeft.setPower(0.5); BackRight.setPower(-0.5);
-                sleep(700);
                 //stop
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopLeft.setPower(0); TopRight.setPower(0); BackLeft.setPower(0); BackRight.setPower(0);
-                sleep(500);
                 currentstep ++;
             }
     }
