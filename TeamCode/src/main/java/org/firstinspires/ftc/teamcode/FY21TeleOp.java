@@ -1,3 +1,7 @@
+//gamepad1 left joystick is the direction and the right joystick is rotation
+//gamepad2 red (B) as stop, green (A) as go and yellow (Y) is the reverse for the Pickup/intake
+//In gamepad2 dpad up launches a ring and dpad down reverses the launcher
+//In gamepad2 right joystick controls the angler
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -20,6 +24,7 @@ public class FY21TeleOp extends OpMode {
     DcMotor BottomLeft;
     DcMotor Launcher;
     DcMotor Pickup;
+    DcMotor Angler;
 
     //define variables and assign type
     double drivepower = 1;
@@ -48,6 +53,15 @@ public class FY21TeleOp extends OpMode {
         Pickup = hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        Angler = hardwareMap.dcMotor.get("A");
+        Angler.setDirection(DcMotorSimple.Direction.FORWARD);
+
+
+        Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        Launcher.setTargetPosition(5000);
+        Angler.setTargetPosition(5000);
     }
 
     public void loop() {
@@ -74,12 +88,14 @@ public class FY21TeleOp extends OpMode {
             BottomRight.setPower(Bottom_Right_Power);
             BottomLeft.setPower(Bottom_Left_Power);
 
-            //This piece of code means that the robot will launch one ring when you press the y button
-            //Then after 1000 milliseconds it will turn the power off
+            //This piece of code means that the robot will launch one ring when you press the dpad up button
             //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
             if (gamepad2.dpad_up) {
-                Launcher.setPower(0.5);
-                sleep(1000);
+                Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //Launch 1 ring
+                Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Launcher.setPower(1);
+                //stop
                 Launcher.setPower(0);
 
                 }
@@ -90,8 +106,8 @@ public class FY21TeleOp extends OpMode {
                 Launcher.setPower(0);
 
                 }
-            //I chose these buttons because it reminded me of a stoplight - which has red as stop, green as go
-            //and yellow in the reverse for unjamming the jammed robot in the Pickup
+            //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
+            //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
             if (gamepad2.a) {
                 Pickup.setPower(0.5);
 
