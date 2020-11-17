@@ -32,6 +32,7 @@ public class FY21TeleOp extends OpMode {
     double Top_Right_Power;
     double Bottom_Right_Power;
     double Bottom_Left_Power;
+    double Angler_Power;
 
     public void init() {
         //assigning motor variables to hardware (as defined on phone)
@@ -66,27 +67,29 @@ public class FY21TeleOp extends OpMode {
 
     public void loop() {
         //telemetry means any data you want to send to a phone
-      telemetry.addData("Inside Loop","");
-      telemetry.update();
+        telemetry.addData("Inside Loop","");
+        telemetry.update();
 
-              //calculating where the robot is going to move based on the position of the joystick
-              //left joystick is the direction and the right joystick is rotation
-              Top_Left_Power = -gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
-              Top_Right_Power = gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
-              Bottom_Left_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
-              Bottom_Right_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
+        //calculating where the robot is going to move based on the position of the joystick
+        //left joystick is the direction and the right joystick is rotation
+        Top_Left_Power = -gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
+        Top_Right_Power = gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
+        Bottom_Left_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
+        Bottom_Right_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
 
+        Top_Left_Power = Range.clip(Top_Left_Power,-1,1);
+        Top_Right_Power = Range.clip(Top_Right_Power,-1,1);
+        Bottom_Right_Power = Range.clip(Bottom_Right_Power,-1,1);
+        Bottom_Left_Power = Range.clip(Bottom_Left_Power,-1,1);
 
-            // 
-            Top_Left_Power = Range.clip(Top_Left_Power,-1,1);
-            Top_Right_Power = Range.clip(Top_Right_Power,-1,1);
-            Bottom_Right_Power = Range.clip(Bottom_Right_Power,-1,1);
-            Bottom_Left_Power = Range.clip(Bottom_Left_Power,-1,1);
+        TopLeft.setPower(Top_Left_Power);
+        TopRight.setPower(Top_Right_Power);
+        BottomRight.setPower(Bottom_Right_Power);
+        BottomLeft.setPower(Bottom_Left_Power);
 
-            TopLeft.setPower(Top_Left_Power);
-            TopRight.setPower(Top_Right_Power);
-            BottomRight.setPower(Bottom_Right_Power);
-            BottomLeft.setPower(Bottom_Left_Power);
+        //The angler changes the angle of the launcher
+        Angler_Power = gamepad2.right_stick_y;
+        Angler.setPower(Angler_Power);
 
             //This piece of code means that the robot will launch one ring when you press the dpad up button
             //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
@@ -101,8 +104,10 @@ public class FY21TeleOp extends OpMode {
                 }
             //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
             if (gamepad2.dpad_down) {
-                Launcher.setPower(-0.5);
-                sleep(1000);
+                Launcher.setTargetPosition(0);
+                Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Launcher.setPower(1);
+                //stop
                 Launcher.setPower(0);
 
                 }
