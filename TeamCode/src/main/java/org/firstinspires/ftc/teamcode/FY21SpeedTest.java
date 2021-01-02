@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "ScrimmageAuto", group = "team")
+@Autonomous(name = "SpeedAuto", group = "team")
 
-public class FY21ScrimmageAuto extends LinearOpMode {
+public class FY21SpeedTest extends LinearOpMode {
 
     DcMotor TopLeft;
     DcMotor TopRight;
@@ -40,10 +40,10 @@ public class FY21ScrimmageAuto extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        TopLeft.setTargetPosition(3000);
-        TopRight.setTargetPosition(3000);
-        BackLeft.setTargetPosition(3000);
-        BackRight.setTargetPosition(3000);
+        TopLeft.setTargetPosition(1440);
+        TopRight.setTargetPosition(1440);
+        BackLeft.setTargetPosition(1440);
+        BackRight.setTargetPosition(1440);
         //1 Tetrix DC motor revolution = 1440 encoder ticks
 
         waitForStart();
@@ -66,10 +66,10 @@ public class FY21ScrimmageAuto extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                TopLeft.setPower(0.25);
-                TopRight.setPower(-0.25);
-                BackLeft.setPower(0.25);
-                BackRight.setPower(-0.25);
+                TopLeft.setPower(0.125);
+                TopRight.setPower(0.125);
+                BackLeft.setPower(0.125);
+                BackRight.setPower(0.125);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {

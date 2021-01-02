@@ -89,6 +89,7 @@ public class ScrimageTeleOp extends OpMode {
 
         if(gamepad1.a){
             drivepower=.5;
+            
 
         }
         if(gamepad1.b) {
