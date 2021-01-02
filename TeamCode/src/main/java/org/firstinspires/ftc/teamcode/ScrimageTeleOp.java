@@ -14,17 +14,17 @@ import com.qualcomm.robotcore.util.Range;
 
 import static android.os.SystemClock.sleep;
 
-@TeleOp(name = "TeleOp_Code", group = "team")
-public class FY21TeleOp extends OpMode {
+@TeleOp(name = "TeleOp_Scrimage", group = "team")
+public class ScrimageTeleOp extends OpMode {
 
     //define motors and assign type
     DcMotor TopLeft;
     DcMotor TopRight;
     DcMotor BottomRight;
     DcMotor BottomLeft;
-    DcMotor Launcher;
-    DcMotor Pickup;
-    DcMotor Angler;
+    //DcMotor Launcher;
+    //DcMotor Pickup;
+    //DcMotor Angler;
 
     //define variables and assign type
     double drivepower = 1;
@@ -32,7 +32,7 @@ public class FY21TeleOp extends OpMode {
     double Top_Right_Power;
     double Bottom_Right_Power;
     double Bottom_Left_Power;
-    double Angler_Power;
+    //double Angler_Power;
 
     public void init() {
         //assigning motor variables to hardware (as defined on phone)
@@ -48,8 +48,8 @@ public class FY21TeleOp extends OpMode {
         BottomRight = hardwareMap.dcMotor.get("BR");
         BottomRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //Launcher = hardwareMap.dcMotor.get("L");
-        //Launcher.setDirection(DcMotorSimple.Direction.FORWARD);
+        /*Launcher = hardwareMap.dcMotor.get("L");
+        Launcher.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Pickup = hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -62,7 +62,7 @@ public class FY21TeleOp extends OpMode {
         Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Launcher.setTargetPosition(5000);
-        Angler.setTargetPosition(5000);
+        Angler.setTargetPosition(5000);*/
     }
 
     public void loop() {
@@ -74,8 +74,8 @@ public class FY21TeleOp extends OpMode {
         //left joystick is the direction and the right joystick is rotation
         Top_Left_Power = -gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
         Top_Right_Power = gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x;
-        Bottom_Left_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
-        Bottom_Right_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
+        Bottom_Left_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
+        Bottom_Right_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
 
         Top_Left_Power = Range.clip(Top_Left_Power,-1,1);
         Top_Right_Power = Range.clip(Top_Right_Power,-1,1);
@@ -88,47 +88,47 @@ public class FY21TeleOp extends OpMode {
         BottomLeft.setPower(Bottom_Left_Power);
 
         //The angler changes the angle of the launcher
-        Angler_Power = gamepad2.right_stick_y;
+        /*Angler_Power = gamepad2.right_stick_y;
         Angler.setPower(Angler_Power);
 
-            //This piece of code means that the robot will launch one ring when you press the dpad up button
-            //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
-            if (gamepad2.dpad_up) {
-                Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                //Launch 1 ring
-                Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Launcher.setPower(1);
-                //stop
-                Launcher.setPower(0);
+        //This piece of code means that the robot will launch one ring when you press the dpad up button
+        //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
+        if (gamepad2.dpad_up) {
+            Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //Launch 1 ring
+            Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Launcher.setPower(1);
+            //stop
+            Launcher.setPower(0);
 
-                }
-            //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
-            if (gamepad2.dpad_down) {
-                Launcher.setTargetPosition(0);
-                Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Launcher.setPower(1);
-                //stop
-                Launcher.setPower(0);
+        }
+        //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
+        if (gamepad2.dpad_down) {
+            Launcher.setTargetPosition(0);
+            Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Launcher.setPower(1);
+            //stop
+            Launcher.setPower(0);
 
-                }
-            //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
-            //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
-            if (gamepad2.a) {
-                Pickup.setPower(0.5);
+        }
+        //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
+        //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
+        if (gamepad2.a) {
+            Pickup.setPower(0.5);
 
-                }
+        }
 
-            if (gamepad2.y) {
-                Pickup.setPower(-0.5);
-
-
-                }
-
-            if (gamepad2.b) {
-                Pickup.setPower(0);
+        if (gamepad2.y) {
+            Pickup.setPower(-0.5);
 
 
-                }
+        }
+
+        if (gamepad2.b) {
+            Pickup.setPower(0);
+
+
+        }*/
 
 
 
