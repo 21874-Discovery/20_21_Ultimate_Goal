@@ -77,16 +77,24 @@ public class ScrimageTeleOp extends OpMode {
         Bottom_Left_Power = -gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
         Bottom_Right_Power = gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x;
 
-        Top_Left_Power = Range.clip(Top_Left_Power,-1,1);
-        Top_Right_Power = Range.clip(Top_Right_Power,-1,1);
-        Bottom_Right_Power = Range.clip(Bottom_Right_Power,-1,1);
-        Bottom_Left_Power = Range.clip(Bottom_Left_Power,-1,1);
+        Top_Left_Power = Range.clip(Top_Left_Power*drivepower,-1,1);
+        Top_Right_Power = Range.clip(Top_Right_Power*drivepower,-1,1);
+        Bottom_Right_Power = Range.clip(Bottom_Right_Power*drivepower,-1,1);
+        Bottom_Left_Power = Range.clip(Bottom_Left_Power*drivepower,-1,1);
 
         TopLeft.setPower(Top_Left_Power);
         TopRight.setPower(Top_Right_Power);
         BottomRight.setPower(Bottom_Right_Power);
         BottomLeft.setPower(Bottom_Left_Power);
 
+        if(gamepad1.a){
+            drivepower=.5;
+
+        }
+        if(gamepad1.b) {
+           drivepower=1;
+
+        }
         //The angler changes the angle of the launcher
         /*Angler_Power = gamepad2.right_stick_y;
         Angler.setPower(Angler_Power);
