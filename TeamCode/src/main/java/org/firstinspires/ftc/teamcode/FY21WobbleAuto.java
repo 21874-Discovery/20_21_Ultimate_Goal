@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "SpeedAuto", group = "team")
+@Autonomous(name = "AutoWobble", group = "team")
 
-public class FY21SpeedTest extends LinearOpMode {
+public class FY21WobbleAuto extends LinearOpMode {
 
     DcMotor TopLeft;
     DcMotor TopRight;
@@ -40,10 +40,10 @@ public class FY21SpeedTest extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        TopLeft.setTargetPosition(2700);
-        TopRight.setTargetPosition(2700);
-        BackLeft.setTargetPosition(2700);
-        BackRight.setTargetPosition(2700);
+        TopLeft.setTargetPosition(2250);
+        TopRight.setTargetPosition(2200);
+        BackLeft.setTargetPosition(2250);
+        BackRight.setTargetPosition(2200);
         //1 Tetrix DC motor revolution = 1440 encoder ticks
 
         waitForStart();
@@ -92,10 +92,89 @@ public class FY21SpeedTest extends LinearOpMode {
             if (currentstep == 2) {
                 telemetry.addData("inside currentstep 2", "");
                 telemetry.update();
-                TopLeft.setTargetPosition(2300);
-                TopRight.setTargetPosition(2300);
-                BackLeft.setTargetPosition(2300);
-                BackRight.setTargetPosition(2300);
+
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                TopLeft.setPower(0.125);
+                TopRight.setPower(0.125);
+                BackLeft.setPower(0.125);
+                BackRight.setPower(0.125);
+
+                TopLeft.setTargetPosition(50);
+                TopRight.setTargetPosition(0);
+                BackLeft.setTargetPosition(50);
+                BackRight.setTargetPosition(0);
+
+                while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
+                {
+                    telemetry.addData("encoder-fwd-left", TopLeft.getCurrentPosition() + "  busy=" + TopLeft.isBusy());
+                    telemetry.addData("encoder-fwd-right", TopRight.getCurrentPosition() + "  busy=" + TopRight.isBusy());
+                    telemetry.update();
+                    idle();
+                }
+
+                //stop
+                TopLeft.setPower(0);
+                TopRight.setPower(0);
+                BackLeft.setPower(0);
+                BackRight.setPower(0);
+                currentstep++;
+            }
+
+            if (currentstep == 3) {
+                telemetry.addData("inside currentstep 3", "");
+                telemetry.update();
+                //Drive forward up to launch line without crossing
+                TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                TopLeft.setPower(0.125);
+                TopRight.setPower(0.125);
+                BackLeft.setPower(0.125);
+                BackRight.setPower(0.125);
+
+                TopLeft.setTargetPosition(-400);
+                TopRight.setTargetPosition(-400);
+                BackLeft.setTargetPosition(400);
+                BackRight.setTargetPosition(400);
+
+                while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
+                {
+                    telemetry.addData("encoder-fwd-left", TopLeft.getCurrentPosition() + "  busy=" + TopLeft.isBusy());
+                    telemetry.addData("encoder-fwd-right", TopRight.getCurrentPosition() + "  busy=" + TopRight.isBusy());
+                    telemetry.update();
+                    idle();
+                }
+                //stop
+                TopLeft.setPower(0);
+                TopRight.setPower(0);
+                BackLeft.setPower(0);
+                BackRight.setPower(0);
+
+                currentstep++;
+            }
+
+            if (currentstep == 4) {
+                telemetry.addData("inside currentstep 4", "");
+                telemetry.update();
+                //Drive forward up to launch line without crossing
+                TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                TopLeft.setTargetPosition(2740);
+                TopRight.setTargetPosition(2700);
+                BackLeft.setTargetPosition(2740);
+                BackRight.setTargetPosition(2700);
 
                 TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -114,16 +193,14 @@ public class FY21SpeedTest extends LinearOpMode {
                     telemetry.update();
                     idle();
                 }
-
                 //stop
                 TopLeft.setPower(0);
                 TopRight.setPower(0);
                 BackLeft.setPower(0);
                 BackRight.setPower(0);
+
                 currentstep++;
             }
-
-
 
         }
 

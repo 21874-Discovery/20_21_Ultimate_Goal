@@ -66,10 +66,10 @@ public class FY21ScrimmageAuto extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                TopLeft.setPower(0.25);
-                TopRight.setPower(-0.25);
-                BackLeft.setPower(0.25);
-                BackRight.setPower(-0.25);
+                TopLeft.setPower(0.125);
+                TopRight.setPower(0.125);
+                BackLeft.setPower(0.125);
+                BackRight.setPower(0.125);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {

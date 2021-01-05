@@ -96,6 +96,16 @@ public class ScrimageTeleOp extends OpMode {
            drivepower=1;
 
         }
+
+        if(gamepad1.x) {
+            drivepower=.25;
+
+        }
+
+        if(gamepad1.y) {
+            drivepower=0.125;
+
+        }
         //The angler changes the angle of the launcher
         /*Angler_Power = gamepad2.right_stick_y;
         Angler.setPower(Angler_Power);
