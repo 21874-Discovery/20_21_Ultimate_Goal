@@ -91,6 +91,26 @@ public class FY21TeleOp extends OpMode {
         Angler_Power = gamepad2.right_stick_y;
         Angler.setPower(Angler_Power);
 
+        if(gamepad1.a){
+            drivepower=.5;
+
+
+        }
+        if(gamepad1.b) {
+            drivepower=1;
+
+        }
+
+        if(gamepad1.x) {
+            drivepower=.25;
+
+        }
+
+        if(gamepad1.y) {
+            drivepower=0.125;
+
+        }
+
             //This piece of code means that the robot will launch one ring when you press the dpad up button
             //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
             if (gamepad2.dpad_up) {

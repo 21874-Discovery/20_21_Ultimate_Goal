@@ -28,8 +28,8 @@ public class FY21WobbleAuto extends LinearOpMode {
 
         TopRight = hardwareMap.dcMotor.get("TR");
         TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
         BackRight = hardwareMap.dcMotor.get("BR");
+
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackLeft = hardwareMap.dcMotor.get("BL");
