@@ -23,7 +23,7 @@ public class ScrimageTeleOp extends OpMode {
     DcMotor BottomRight;
     DcMotor BottomLeft;
     //DcMotor Launcher;
-    //DcMotor Pickup;
+    DcMotor Pickup;
     //DcMotor Angler;
 
     //define variables and assign type
@@ -33,6 +33,7 @@ public class ScrimageTeleOp extends OpMode {
     double Bottom_Right_Power;
     double Bottom_Left_Power;
     //double Angler_Power;
+    double Pickup_Power;
 
     public void init() {
         //assigning motor variables to hardware (as defined on phone)
@@ -50,10 +51,10 @@ public class ScrimageTeleOp extends OpMode {
 
         /*Launcher = hardwareMap.dcMotor.get("L");
         Launcher.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        */
         Pickup = hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        /*
         Angler = hardwareMap.dcMotor.get("A");
         Angler.setDirection(DcMotorSimple.Direction.FORWARD);
 
@@ -130,6 +131,8 @@ public class ScrimageTeleOp extends OpMode {
             Launcher.setPower(0);
 
         }
+
+        */
         //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
         //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
         if (gamepad2.a) {
@@ -147,7 +150,7 @@ public class ScrimageTeleOp extends OpMode {
             Pickup.setPower(0);
 
 
-        }*/
+        }
 
 
 
