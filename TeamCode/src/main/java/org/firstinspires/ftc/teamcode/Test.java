@@ -169,10 +169,10 @@ public class Test extends LinearOpMode {
                 BackLeft.setPower(0.125);
                 BackRight.setPower(0.125);
 
-                TopLeft.setTargetPosition(900);
-                TopRight.setTargetPosition(900);
-                BackLeft.setTargetPosition(900);
-                BackRight.setTargetPosition(900);
+                TopLeft.setTargetPosition(700);
+                TopRight.setTargetPosition(700);
+                BackLeft.setTargetPosition(700);
+                BackRight.setTargetPosition(700);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {
@@ -205,10 +205,10 @@ public class Test extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                TopLeft.setTargetPosition(2900);
-                TopRight.setTargetPosition(2300);
-                BackLeft.setTargetPosition(2300);
-                BackRight.setTargetPosition(2900);
+                TopLeft.setTargetPosition(3000);
+                TopRight.setTargetPosition(1800);
+                BackLeft.setTargetPosition(1800);
+                BackRight.setTargetPosition(3000);
 
                 TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -261,10 +261,10 @@ public class Test extends LinearOpMode {
                 BackLeft.setPower(0.125);
                 BackRight.setPower(0.125);
 
-                TopLeft.setTargetPosition(300);
-                TopRight.setTargetPosition(300);
-                BackLeft.setTargetPosition(300);
-                BackRight.setTargetPosition(300);
+                TopLeft.setTargetPosition(400);
+                TopRight.setTargetPosition(400);
+                BackLeft.setTargetPosition(400);
+                BackRight.setTargetPosition(400);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {
@@ -282,7 +282,7 @@ public class Test extends LinearOpMode {
                 currentstep++;
             }
 
-            if (currentstep == 6) {
+            /*if (currentstep == 6) {
                 //Drive left, line up with first power shot peg
                 telemetry.addData("inside currentstep 6", "");
                 telemetry.update();
@@ -441,7 +441,7 @@ public class Test extends LinearOpMode {
                 BackRight.setPower(0);
 
                 currentstep++;
-            }
+            }*/
 
         }
 
