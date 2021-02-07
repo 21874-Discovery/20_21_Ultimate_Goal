@@ -17,7 +17,7 @@ public class Test extends LinearOpMode {
     DcMotor BackLeft;
     DcMotor Launcher;
     DcMotor Pickup;
-    //DcMotor Angler;
+    DcMotor Orange;
 
 
     int currentstep = 0;
@@ -39,13 +39,13 @@ public class Test extends LinearOpMode {
         BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Launcher = hardwareMap.dcMotor.get("L");
-        Launcher.setDirection(DcMotorSimple.Direction.FORWARD);
+        Launcher.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Pickup =hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //Angler = hardwareMap.dcMotor.get("A");
-        //Angler.setDirection(DcMotorSimple.Direction.FORWARD);
+        Orange = hardwareMap.dcMotor.get("O");
+        Orange.setDirection(DcMotorSimple.Direction.FORWARD);
 
         TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -53,7 +53,7 @@ public class Test extends LinearOpMode {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Orange.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         TopLeft.setTargetPosition(2250);
         TopRight.setTargetPosition(1800);
@@ -61,7 +61,7 @@ public class Test extends LinearOpMode {
         BackRight.setTargetPosition(2250);
         Launcher.setTargetPosition(5000);
         Pickup.setTargetPosition(5000);
-        //Angler.setTargetPosition(5000);
+        //Orange.setTargetPosition(5000);
         //1 Tetrix DC motor 60:1 revolution = 1440 encoder ticks
 
         waitForStart();
@@ -118,10 +118,10 @@ public class Test extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                TopLeft.setPower(0.125);
-                TopRight.setPower(0.125);
-                BackLeft.setPower(0.125);
-                BackRight.setPower(0.125);
+                TopLeft.setPower(0.25);
+                TopRight.setPower(0.25);
+                BackLeft.setPower(0.25);
+                BackRight.setPower(0.25);
 
                 TopLeft.setTargetPosition(50);
                 TopRight.setTargetPosition(0);
@@ -164,15 +164,15 @@ public class Test extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                TopLeft.setPower(0.125);
-                TopRight.setPower(0.125);
-                BackLeft.setPower(0.125);
-                BackRight.setPower(0.125);
+                TopLeft.setPower(0.25);
+                TopRight.setPower(0.25);
+                BackLeft.setPower(0.25);
+                BackRight.setPower(0.25);
 
-                TopLeft.setTargetPosition(700);
-                TopRight.setTargetPosition(700);
-                BackLeft.setTargetPosition(700);
-                BackRight.setTargetPosition(700);
+                TopLeft.setTargetPosition(750);
+                TopRight.setTargetPosition(750);
+                BackLeft.setTargetPosition(750);
+                BackRight.setTargetPosition(750);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {
@@ -256,15 +256,15 @@ public class Test extends LinearOpMode {
                 BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                TopLeft.setPower(0.125);
-                TopRight.setPower(0.125);
-                BackLeft.setPower(0.125);
-                BackRight.setPower(0.125);
+                TopLeft.setPower(0.25);
+                TopRight.setPower(0.25);
+                BackLeft.setPower(0.25);
+                BackRight.setPower(0.25);
 
-                TopLeft.setTargetPosition(400);
-                TopRight.setTargetPosition(400);
-                BackLeft.setTargetPosition(400);
-                BackRight.setTargetPosition(400);
+                TopLeft.setTargetPosition(500);
+                TopRight.setTargetPosition(500);
+                BackLeft.setTargetPosition(500);
+                BackRight.setTargetPosition(500);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {
@@ -282,7 +282,7 @@ public class Test extends LinearOpMode {
                 currentstep++;
             }
 
-            /*if (currentstep == 6) {
+            if (currentstep == 6) {
                 //Drive left, line up with first power shot peg
                 telemetry.addData("inside currentstep 6", "");
                 telemetry.update();
@@ -307,15 +307,15 @@ public class Test extends LinearOpMode {
                 BackLeft.setPower(0.125);
                 BackRight.setPower(0.125);
 
-                TopLeft.setTargetPosition(1000);
-                TopRight.setTargetPosition(1000);
-                BackLeft.setTargetPosition(1000);
-                BackRight.setTargetPosition(1000);
+                TopLeft.setTargetPosition(700);
+                TopRight.setTargetPosition(700);
+                BackLeft.setTargetPosition(700);
+                BackRight.setTargetPosition(700);
 
                 while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                 {
-                    telemetry.addData("encoder-fwd-left", TopLeft.getCurrentPosition() + "  busy=" + TopLeft.isBusy());
-                    telemetry.addData("encoder-fwd-right", TopRight.getCurrentPosition() + "  busy=" + TopRight.isBusy());
+                    telemetry.addData("6 encoder-fwd-left", TopLeft.getCurrentPosition() + "  busy=" + TopLeft.isBusy());
+                    telemetry.addData("6 encoder-fwd-right", TopRight.getCurrentPosition() + "  busy=" + TopRight.isBusy());
                     telemetry.update();
                     idle();
                 }
@@ -329,8 +329,20 @@ public class Test extends LinearOpMode {
             }
 
             if (currentstep == 7) {
-                //Launch rings at power shots
+                //turn on launcher
                 telemetry.addData("inside currentstep 7", "");
+                telemetry.update();
+                Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                Launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                Launcher.setPower(1);
+
+
+                currentstep ++;
+            }
+
+            if (currentstep == 8) {
+                //Launch rings at power shots
+                telemetry.addData("inside currentstep 8", "");
                 telemetry.update();
                 for (int i = 0; i < 4 && opModeIsActive(); i++) {
                     telemetry.addData("Loop", i);
@@ -338,13 +350,13 @@ public class Test extends LinearOpMode {
                     //reset encoder every loop
                     Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     //Launch 1 ring
-                    Launcher.setTargetPosition(300);
+                    Launcher.setTargetPosition(400);
                     Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     Launcher.setPower(1);
                     while (opModeIsActive() && Launcher.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                     {
-                        telemetry.addData("encoder-fwd-left", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
-                       telemetry.addData("encoder-fwd-right", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
+                        telemetry.addData("8 encoder-fwd-left", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
+                        telemetry.addData("8 encoder-fwd-right", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
                         telemetry.update();
                        idle();
                     }
@@ -354,18 +366,18 @@ public class Test extends LinearOpMode {
                     //Move left
                     TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
                     TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-                    BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-                    BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+                    BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+                    BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
                     TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                    TopLeft.setTargetPosition(500);
-                    TopRight.setTargetPosition(500);
-                    BackLeft.setTargetPosition(500);
-                    BackRight.setTargetPosition(500);
+                    TopLeft.setTargetPosition(25);
+                    TopRight.setTargetPosition(25);
+                    BackLeft.setTargetPosition(25);
+                    BackRight.setTargetPosition(25);
 
                     TopLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     TopRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -397,9 +409,18 @@ public class Test extends LinearOpMode {
                 currentstep++;
             }
 
-            if (currentstep == 8) {
+            if (currentstep == 9) {
+                //turn off launcher
+                telemetry.addData("inside currentstep 9", "");
+                telemetry.update();
+                Launcher.setPower(0);
+
+                currentstep ++;
+            }
+
+            if (currentstep == 10) {
                 //Drive forward and park on launch line
-                telemetry.addData("inside currentstep 8", "");
+                telemetry.addData("inside currentstep 10", "");
                 telemetry.update();
 
                 TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -441,11 +462,9 @@ public class Test extends LinearOpMode {
                 BackRight.setPower(0);
 
                 currentstep++;
-            }*/
+            }
 
         }
 
     }
 }
-
-//test JRS 10/13/20

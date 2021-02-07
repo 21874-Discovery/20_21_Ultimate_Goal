@@ -22,7 +22,7 @@ public class ScrimageTeleOp extends OpMode {
     DcMotor TopRight;
     DcMotor BottomRight;
     DcMotor BottomLeft;
-    //DcMotor Launcher;
+    DcMotor Launcher;
     DcMotor Pickup;
     //DcMotor Angler;
 
@@ -49,21 +49,21 @@ public class ScrimageTeleOp extends OpMode {
         BottomRight = hardwareMap.dcMotor.get("BR");
         BottomRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        /*Launcher = hardwareMap.dcMotor.get("L");
+        Launcher = hardwareMap.dcMotor.get("L");
         Launcher.setDirection(DcMotorSimple.Direction.FORWARD);
-        */
+
         Pickup = hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
-        /*
-        Angler = hardwareMap.dcMotor.get("A");
-        Angler.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        //Angler = hardwareMap.dcMotor.get("A");
+        //Angler.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        Launcher.setTargetPosition(5000);
-        Angler.setTargetPosition(5000);*/
+        Launcher.setTargetPosition(500);
+        //Angler.setTargetPosition(5000);
     }
 
     public void loop() {
@@ -108,8 +108,8 @@ public class ScrimageTeleOp extends OpMode {
 
         }
         //The angler changes the angle of the launcher
-        /*Angler_Power = gamepad2.right_stick_y;
-        Angler.setPower(Angler_Power);
+        //Angler_Power = gamepad2.right_stick_y;
+        //Angler.setPower(Angler_Power);
 
         //This piece of code means that the robot will launch one ring when you press the dpad up button
         //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
@@ -132,7 +132,6 @@ public class ScrimageTeleOp extends OpMode {
 
         }
 
-        */
         //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
         //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
         if (gamepad2.a) {
