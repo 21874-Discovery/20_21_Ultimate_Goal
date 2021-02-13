@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 @Autonomous(name = "Test", group = "team")
 
@@ -18,6 +18,7 @@ public class Test extends LinearOpMode {
     DcMotor Launcher;
     DcMotor Pickup;
     DcMotor Orange;
+    CRServo CR1;
 
 
     int currentstep = 0;
@@ -40,14 +41,16 @@ public class Test extends LinearOpMode {
 
         Launcher = hardwareMap.dcMotor.get("L");
         Launcher.setDirection(DcMotorSimple.Direction.REVERSE);
-
         Pickup =hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Orange = hardwareMap.dcMotor.get("O");
-        Orange.setDirection(DcMotorSimple.Direction.FORWARD);
-
         TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        CR1 = hardwareMap.crservo.get("CR1");
+
+
+        Orange.setDirection(DcMotorSimple.Direction.FORWARD);
         TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -342,27 +345,43 @@ public class Test extends LinearOpMode {
 
             if (currentstep == 8) {
                 //Launch rings at power shots
+                //We need to change this code to use the 360 servo instead of the Launcher motor to launch the rings three times.
+                //The 3 start rings will be stacked and we will slide each ring forward using the servo to feed the launcher.
+                //Need to find 360 servo code!  this could be listed as CR Servo
                 telemetry.addData("inside currentstep 8", "");
                 telemetry.update();
                 for (int i = 0; i < 4 && opModeIsActive(); i++) {
                     telemetry.addData("Loop", i);
                     telemetry.update();
                     //reset encoder every loop
-                    Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    //Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     //Launch 1 ring
-                    Launcher.setTargetPosition(400);
-                    Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    Launcher.setPower(1);
-                    while (opModeIsActive() && Launcher.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
+                    //Launcher.setTargetPosition(400);
+                    //Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //Launcher.setPower(1);
+                    /*while (opModeIsActive() && Launcher.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
                     {
                         telemetry.addData("8 encoder-fwd-left", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
                         telemetry.addData("8 encoder-fwd-right", Launcher.getCurrentPosition() + "  busy=" + Launcher.isBusy());
                         telemetry.update();
                        idle();
                     }
-                    //stop
-                   Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    Launcher.setPower(0);
+                    //stop*/
+                    //
+                        CR1.getController().pwmEnable();
+                        //CR2.getController().pwmEnable();
+                        CR1.setPower(1);
+                        //CR2.setPower(1);
+                    sleep (1000);
+                        //CR2.setPower(0);
+                        CR1.setPower(0);
+                        CR1.getController().pwmDisable();
+                        //CR2.getController().pwmDisable();
+
+
+
+                   //Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //Launcher.setPower(0);
                     //Move left
                     TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
                     TopRight.setDirection(DcMotorSimple.Direction.REVERSE);

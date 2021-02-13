@@ -7,6 +7,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,6 +26,8 @@ public class ScrimageTeleOp extends OpMode {
     DcMotor Launcher;
     DcMotor Pickup;
     //DcMotor Angler;
+    CRServo CR1;
+    CRServo CR2;
 
     //define variables and assign type
     double drivepower = 1;
@@ -57,6 +60,9 @@ public class ScrimageTeleOp extends OpMode {
 
         //Angler = hardwareMap.dcMotor.get("A");
         //Angler.setDirection(DcMotorSimple.Direction.FORWARD);
+        CR1 = hardwareMap.crservo.get("CR1");
+
+        CR2 = hardwareMap.crservo.get("CR2");
 
 
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -107,6 +113,27 @@ public class ScrimageTeleOp extends OpMode {
             drivepower=0.125;
 
         }
+        //Code for servos
+        if (gamepad2.left_bumper) {
+            CR1.getController().pwmEnable();
+            //CR2.getController().pwmEnable();
+            CR1.setPower(1);
+            //CR2.setPower(-1);
+        }
+
+        if (gamepad2.right_bumper) {
+            //CR2.setPower(0);
+            CR1.setPower(0);
+            CR1.getController().pwmDisable();
+            //CR2.getController().pwmDisable();
+        }
+/*
+        if (gamepad2.x) {
+            CR1.getController().pwmEnable();
+            CR2.getController().pwmEnable();
+            CR1.setPower(-1);
+            CR2.setPower(1);
+        }*/
         //The angler changes the angle of the launcher
         //Angler_Power = gamepad2.right_stick_y;
         //Angler.setPower(Angler_Power);
@@ -161,6 +188,8 @@ public class ScrimageTeleOp extends OpMode {
 
 
 }
+
+
 
 
 
