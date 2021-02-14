@@ -26,8 +26,7 @@ public class ScrimageTeleOp extends OpMode {
     DcMotor Launcher;
     DcMotor Pickup;
     //DcMotor Angler;
-    CRServo CR1;
-    CRServo CR2;
+    Servo Flick;
 
     //define variables and assign type
     double drivepower = 1;
@@ -37,6 +36,11 @@ public class ScrimageTeleOp extends OpMode {
     double Bottom_Left_Power;
     //double Angler_Power;
     double Pickup_Power;
+    double Flick_Power;
+    public final static double ARM_HOME = 0.6; //sets the starting position for the servo. it will go to this position when robot starts
+    public final static double ARM_MIN_RANGE = 0;
+    public final static double ARM_MAX_RANGE = 1;
+    double FlickPosition = ARM_HOME;
 
     public void init() {
         //assigning motor variables to hardware (as defined on phone)
@@ -60,9 +64,10 @@ public class ScrimageTeleOp extends OpMode {
 
         //Angler = hardwareMap.dcMotor.get("A");
         //Angler.setDirection(DcMotorSimple.Direction.FORWARD);
-        CR1 = hardwareMap.crservo.get("CR1");
-
-        CR2 = hardwareMap.crservo.get("CR2");
+        Flick = hardwareMap.servo.get("F");
+        Flick.setDirection(Servo.Direction.FORWARD);
+        Flick_Power = 0.5;
+        Flick.setPosition(ARM_HOME);
 
 
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -115,17 +120,26 @@ public class ScrimageTeleOp extends OpMode {
         }
         //Code for servos
         if (gamepad2.left_bumper) {
-            CR1.getController().pwmEnable();
+            Flick.getController().pwmEnable();
             //CR2.getController().pwmEnable();
-            CR1.setPower(1);
-            //CR2.setPower(-1);
+            //Flick.setPower(1);
+            FlickPosition = (FlickPosition-.4);
+            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+            Flick.setPosition(FlickPosition);
+            telemetry.addData("Flick",FlickPosition);
+            telemetry.update();
+
         }
 
         if (gamepad2.right_bumper) {
             //CR2.setPower(0);
-            CR1.setPower(0);
-            CR1.getController().pwmDisable();
-            //CR2.getController().pwmDisable();
+            Flick.getController().pwmDisable();
+            FlickPosition = (ARM_HOME);
+            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+            Flick.setPosition(FlickPosition);
+            telemetry.addData("Flick",FlickPosition);
+            telemetry.update();
+
         }
 /*
         if (gamepad2.x) {
@@ -143,6 +157,7 @@ public class ScrimageTeleOp extends OpMode {
         if (gamepad2.dpad_up) {
             Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             //Launch 1 ring
+            Launcher.setTargetPosition(5600);
             Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             Launcher.setPower(1);
             //stop

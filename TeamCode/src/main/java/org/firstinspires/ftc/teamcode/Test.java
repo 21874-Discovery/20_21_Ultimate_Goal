@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name = "Test", group = "team")
 
@@ -16,10 +18,14 @@ public class Test extends LinearOpMode {
     DcMotor BackRight;
     DcMotor BackLeft;
     DcMotor Launcher;
-    DcMotor Pickup;
-    DcMotor Orange;
-    CRServo CR1;
+    DcMotor Pickup; //intakes rings from playing field
+    Servo Flick; //flicks rings from the intake to the launcher
 
+    double Flick_Power;
+    public final static double ARM_HOME = 0.6; //sets the starting position for the servo. it will go to this position when robot starts
+    public final static double ARM_MIN_RANGE = 0;
+    public final static double ARM_MAX_RANGE = 1;
+    double FlickPosition = ARM_HOME;
 
     int currentstep = 0;
 
@@ -44,19 +50,18 @@ public class Test extends LinearOpMode {
         Pickup =hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        Orange = hardwareMap.dcMotor.get("O");
         TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        CR1 = hardwareMap.crservo.get("CR1");
+        Flick = hardwareMap.servo.get("F");
+        Flick.setDirection(Servo.Direction.FORWARD);
+        Flick_Power = 0.5;
+        Flick.setPosition(ARM_HOME);
 
-
-        Orange.setDirection(DcMotorSimple.Direction.FORWARD);
         TopRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //Orange.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         TopLeft.setTargetPosition(2250);
         TopRight.setTargetPosition(1800);
@@ -64,7 +69,6 @@ public class Test extends LinearOpMode {
         BackRight.setTargetPosition(2250);
         Launcher.setTargetPosition(5000);
         Pickup.setTargetPosition(5000);
-        //Orange.setTargetPosition(5000);
         //1 Tetrix DC motor 60:1 revolution = 1440 encoder ticks
 
         waitForStart();
@@ -332,13 +336,13 @@ public class Test extends LinearOpMode {
             }
 
             if (currentstep == 7) {
-                //turn on launcher
+                //turn on launcher and run until step 9
                 telemetry.addData("inside currentstep 7", "");
                 telemetry.update();
                 Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 Launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 Launcher.setPower(1);
-
+                sleep(500);
 
                 currentstep ++;
             }
@@ -367,16 +371,20 @@ public class Test extends LinearOpMode {
                        idle();
                     }
                     //stop*/
-                    //
-                        CR1.getController().pwmEnable();
-                        //CR2.getController().pwmEnable();
-                        CR1.setPower(1);
-                        //CR2.setPower(1);
-                    sleep (1000);
-                        //CR2.setPower(0);
-                        CR1.setPower(0);
-                        CR1.getController().pwmDisable();
-                        //CR2.getController().pwmDisable();
+                    //the servo flicks a ring from the stack forward to the launcher then resets so it can flick another ring
+                    Flick.getController().pwmEnable();
+                    //CR2.getController().pwmEnable();
+                    FlickPosition = (FlickPosition-.4);
+                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                    Flick.setPosition(FlickPosition);
+                    //Flick.setPower(1);
+                    sleep (500);
+                    //CR2.setPower(0);
+                    FlickPosition = (FlickPosition+.4);
+                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                    Flick.setPosition(FlickPosition);;
+                    Flick.getController().pwmDisable();
+                    //CR2.getController().pwmDisable();
 
 
 
