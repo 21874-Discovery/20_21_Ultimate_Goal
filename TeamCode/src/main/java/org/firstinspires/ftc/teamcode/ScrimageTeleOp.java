@@ -37,10 +37,13 @@ public class ScrimageTeleOp extends OpMode {
     //double Angler_Power;
     double Pickup_Power;
     double Flick_Power;
-    public final static double ARM_HOME = 0.6; //sets the starting position for the servo. it will go to this position when robot starts
+    public final static double ARM_FLICKED = 0.6;
+    public final static double ARM_HOME = 1; //sets the starting position for the servo. it will go to this position when robot starts
     public final static double ARM_MIN_RANGE = 0;
     public final static double ARM_MAX_RANGE = 1;
     double FlickPosition = ARM_HOME;
+
+
 
     public void init() {
         //assigning motor variables to hardware (as defined on phone)
@@ -101,39 +104,34 @@ public class ScrimageTeleOp extends OpMode {
 
         if(gamepad1.a){
             drivepower=.5;
-            
-
         }
+
         if(gamepad1.b) {
            drivepower=1;
-
         }
 
         if(gamepad1.x) {
             drivepower=.25;
-
         }
 
         if(gamepad1.y) {
             drivepower=0.125;
-
         }
         //Code for servos
         if (gamepad2.left_bumper) {
-            Flick.getController().pwmEnable();
+            //Flick.getController().pwmEnable();
             //CR2.getController().pwmEnable();
             //Flick.setPower(1);
-            FlickPosition = (FlickPosition-.4);
+            FlickPosition = (ARM_FLICKED);
             FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
             Flick.setPosition(FlickPosition);
             telemetry.addData("Flick",FlickPosition);
             telemetry.update();
-
         }
 
         if (gamepad2.right_bumper) {
             //CR2.setPower(0);
-            Flick.getController().pwmDisable();
+            //Flick.getController().pwmDisable();
             FlickPosition = (ARM_HOME);
             FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
             Flick.setPosition(FlickPosition);
@@ -154,22 +152,26 @@ public class ScrimageTeleOp extends OpMode {
 
         //This piece of code means that the robot will launch one ring when you press the dpad up button
         //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
-        if (gamepad2.dpad_up) {
-            Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //Launch 1 ring
-            Launcher.setTargetPosition(5600);
-            Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (gamepad2.dpad_up) {
+
             Launcher.setPower(1);
-            //stop
-            Launcher.setPower(0);
 
         }
         //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
-        if (gamepad2.dpad_down) {
-            Launcher.setTargetPosition(0);
-            Launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            Launcher.setPower(1);
-            //stop
+        while (gamepad2.dpad_down) {
+
+            Launcher.setPower(-1);
+
+        }
+
+        while (!gamepad2.dpad_down) {
+
+            Launcher.setPower(0);
+
+        }
+
+        while (!gamepad2.dpad_up) {
+
             Launcher.setPower(0);
 
         }
