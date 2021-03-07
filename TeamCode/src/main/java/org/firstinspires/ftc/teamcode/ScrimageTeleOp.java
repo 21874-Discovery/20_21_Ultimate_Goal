@@ -74,6 +74,7 @@ public class ScrimageTeleOp extends OpMode {
 
 
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Angler.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Launcher.setTargetPosition(500);
@@ -154,17 +155,25 @@ public class ScrimageTeleOp extends OpMode {
         //Launcher.setPower(Range.clip(gamepad2.left_trigger, 0, 1));
         while (gamepad2.dpad_up) {
 
-            Launcher.setPower(1);
+            Launcher.setPower(-1);
 
         }
         //We are setting launcher to negative because we are waiting to unjam the robot when it gets jammed
         while (gamepad2.dpad_down) {
 
-            Launcher.setPower(-1);
+            Launcher.setPower(0);
 
         }
 
-        while (!gamepad2.dpad_down) {
+        while (gamepad2.dpad_left) {
+
+            Launcher.setPower(0);
+            sleep(500);
+            Launcher.setPower(0.5);
+
+        }
+
+        /*while (!gamepad2.dpad_down) {
 
             Launcher.setPower(0);
 
@@ -174,7 +183,7 @@ public class ScrimageTeleOp extends OpMode {
 
             Launcher.setPower(0);
 
-        }
+        }*/
 
         //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
         //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
@@ -183,23 +192,11 @@ public class ScrimageTeleOp extends OpMode {
 
         }
 
-        if (gamepad2.y) {
-            Pickup.setPower(-0.5);
-
-
-        }
-
         if (gamepad2.b) {
             Pickup.setPower(0);
 
 
         }
-
-
-
-
-
-
 
     }
 
