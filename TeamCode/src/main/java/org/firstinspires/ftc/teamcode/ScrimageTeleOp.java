@@ -198,6 +198,12 @@ public class ScrimageTeleOp extends OpMode {
 
         }
 
+        if (gamepad2.x) {
+
+            Pickup.setPower(-0.5);
+
+        }
+
     }
 
 

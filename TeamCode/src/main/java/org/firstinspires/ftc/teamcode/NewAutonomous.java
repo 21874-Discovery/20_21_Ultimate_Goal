@@ -45,8 +45,6 @@ public class NewAutonomous extends LinearOpMode {
     int currentstep = 0;
 
     public void runOpMode() {
-
-
         TopLeft = hardwareMap.dcMotor.get("TL");
         TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         //   TopLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -62,6 +60,7 @@ public class NewAutonomous extends LinearOpMode {
 
         Launcher = hardwareMap.dcMotor.get("L");
         Launcher.setDirection(DcMotorSimple.Direction.REVERSE);
+
         Pickup =hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
@@ -122,8 +121,10 @@ public class NewAutonomous extends LinearOpMode {
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-               OmniTurn("Left",0.125,15);
-               OmniDrive("Backward",0.25,900);
+               OmniTurn("Left",0.125,12);
+               OmniDrive("Backward",0.25,100);
+               OmniDrive("Left",0.25,400);  //600
+                OmniDrive("Backward",0.25,1000);
 
                 currentstep++;
             }
@@ -141,12 +142,13 @@ public class NewAutonomous extends LinearOpMode {
                     FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                     Flick.setPosition(FlickPosition);
                     //Flick.setPower(1);
-                    sleep (1000);
+                    sleep (500);
                     //CR2.setPower(0);
                     FlickPosition = (ARM_HOME);
                     FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                     Flick.setPosition(FlickPosition);
-                    sleep (1000);
+                    OmniTurn("Left",0.25,3);
+                    sleep (500);
 
 
                     telemetry.addData("end of loop", "");
@@ -160,9 +162,9 @@ public class NewAutonomous extends LinearOpMode {
             if (currentstep == 5) {
                 //Turn pickup on
 
-                Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                /*Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 Pickup.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                Pickup.setPower(1);
+                Pickup.setPower(1);*/
 
                 currentstep++;
             }
@@ -172,7 +174,7 @@ public class NewAutonomous extends LinearOpMode {
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                for (int i = 0; i < 3 && opModeIsActive(); i++) {
+               /* for (int i = 0; i < 3 && opModeIsActive(); i++) {
                     telemetry.addData("Loop", i);
                     telemetry.update();
 
@@ -180,18 +182,19 @@ public class NewAutonomous extends LinearOpMode {
                     FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                     Flick.setPosition(FlickPosition);
                     //Flick.setPower(1);
-                    sleep (1000);
+                    sleep (500);
                     //CR2.setPower(0);
                     FlickPosition = (ARM_HOME);
                     FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                     Flick.setPosition(FlickPosition);
-                    sleep (1000);
+                    sleep (500);
 
 
                     telemetry.addData("end of loop", "");
                     telemetry.update();
 
                 }
+                */
 
                 currentstep++;
             }
@@ -209,11 +212,12 @@ public class NewAutonomous extends LinearOpMode {
             }
 
             if (currentstep == 8){
-                //placeholder
+                //drive back to wall
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                OmniDrive("Backwards",0.25,1400);
+                //OmniTurn("Right",0.25,5);
+                OmniDrive("Backward",0.25,1320);
 
                 currentstep++;
             }
@@ -223,7 +227,7 @@ public class NewAutonomous extends LinearOpMode {
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                OmniDrive("Right",0.25,650);
+                OmniDrive("Right",0.25,530);
 
                 currentstep ++;
             }
@@ -233,13 +237,15 @@ public class NewAutonomous extends LinearOpMode {
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                OmniTurn("Forward",0.125,15);
-                OmniDrive("Forward",0.125,1700);
-
+                OmniTurn("Right",0.125,20);
+                OmniDrive("Forward",0.125,2100);
+                OmniDrive("Backward",0.125,100);
+                OmniDrive("Left", 0.125, 800);
+                OmniDrive("Forward",0.125, 150);
                 currentstep++;
             }
 
-            if (currentstep == 11){
+            /*if (currentstep == 11){
                 //Park
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
@@ -266,7 +272,7 @@ public class NewAutonomous extends LinearOpMode {
                 OmniDrive("Forward",0.25,100);
 
                 currentstep++;
-            }
+            }*/
 
         }
 
@@ -281,32 +287,36 @@ public class NewAutonomous extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        if(Dir.equals("Forward")){
-            TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-            TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-            BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-            BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        switch (Dir) {
+            case "Forward":
+                TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+                TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
+                BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+                BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+                break;
+            case "Backward":
+                TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+                TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
+                BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+                BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+                break;
+            case "Left":
+                TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+                TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
+                BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+                BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+                break;
+            case "Right":
+                TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+                TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
+                BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+                BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+                break;
+            default:
+                telemetry.addData("Invalid Direction", Dir);
+                telemetry.update();
+                return;
         }
-        if(Dir.equals("Backward")) {
-            TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-            TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        if(Dir.equals("Left")) {
-            TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-            TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-            BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        }
-        if(Dir.equals("Right")) {
-            TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-            TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-            BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-
         Dist=Math.abs(Dist);
         TopLeft.setTargetPosition(Dist);
         TopRight.setTargetPosition(Dist);
@@ -342,7 +352,7 @@ public class NewAutonomous extends LinearOpMode {
     }
 
 
-    public void OmniTurn(String Dir, double Spd, int Deg) {
+    public void OmniTurn(String DirT, double SpdT, int Deg) {
         //Ugh even more Math!!
         //number of ticks for a turn of 1 degree TicksPerDegree
         //if I want to turn more than 1 degree; multiple by number of degrees I want to turn
@@ -356,14 +366,14 @@ public class NewAutonomous extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        if(Dir.equals("Left")) {
+        if(DirT.equals("Left")) {
             TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
             BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
             BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         }
-        if(Dir.equals("Right")) {
+        if(DirT.equals("Right")) {
             TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
             TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
             BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -381,11 +391,11 @@ public class NewAutonomous extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Spd=Range.clip(Spd, 0, 1);
-        TopLeft.setPower(Spd);
-        TopRight.setPower(Spd);
-        BackLeft.setPower(Spd);
-        BackRight.setPower(Spd);
+        SpdT=Range.clip(SpdT, 0, 1);
+        TopLeft.setPower(SpdT);
+        TopRight.setPower(SpdT);
+        BackLeft.setPower(SpdT);
+        BackRight.setPower(SpdT);
 
 
 
