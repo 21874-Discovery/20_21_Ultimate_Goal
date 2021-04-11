@@ -9,11 +9,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name = "OptimizedAutoRed", group = "team")
+@Autonomous(name = "OneWobbleRed", group = "team")
 
-public class AutoRed extends LinearOpMode {
-
-    //400 encoder rotations = 1 foot
+public class OneWobbleAuto extends LinearOpMode {
 
     DcMotor TopLeft;
     DcMotor TopRight;
@@ -34,15 +32,13 @@ public class AutoRed extends LinearOpMode {
     //Robot spins in a circle, rough diameter of robot's circle can be no more than 25.42 (diagonal)
     double RobotCircumference = RobotDiameter * 3.14;//Max circumference of Robot (d * pi) = 80 in
     double WheelSize = 4;  //diameter in inches of wheels (the engineers like 4in)
-    double WheelCircumference = WheelSize*3.14; //Circumference (d * pi) of wheel (distance wheel travels for 1 rotation)
-    double RotationsPerCircle = RobotCircumference/WheelCircumference;// wheel rotations to turns in complete circle
+    double WheelCircumference = WheelSize * 3.14; //Circumference (d * pi) of wheel (distance wheel travels for 1 rotation)
+    double RotationsPerCircle = RobotCircumference / WheelCircumference;// wheel rotations to turns in complete circle
 
     int DriveTicks = 480;  //1 wheel rotation = DriveTicks - based on motor and gear ratio  => 1 Tetrix DC motor 60:1 revolution = 1440 encoder ticks (20:1 = 480 ticks (divide by 60/20) or 400 ticks = 1 foot)
     //DriveTicks * RotationsPerCircle = 360 degrees
     //Rotations per degree
-    int TicksPerDegree = (int) Math.round((DriveTicks * RotationsPerCircle)/360);
-
-    int currentstep = 0;
+    int TicksPerDegree = (int) Math.round((DriveTicks * RotationsPerCircle) / 360);
 
     public void runOpMode() {
         TopLeft = hardwareMap.dcMotor.get("TL");
@@ -61,7 +57,7 @@ public class AutoRed extends LinearOpMode {
         Launcher = hardwareMap.dcMotor.get("L");
         Launcher.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        Pickup =hardwareMap.dcMotor.get("P");
+        Pickup = hardwareMap.dcMotor.get("P");
         Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
 
         TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -77,13 +73,7 @@ public class AutoRed extends LinearOpMode {
         Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        TopLeft.setTargetPosition(2250);
-        TopRight.setTargetPosition(1800);
-        BackLeft.setTargetPosition(1800);
-        BackRight.setTargetPosition(2250);
-        Launcher.setTargetPosition(5000);
-        Pickup.setTargetPosition(5000);
-        //1 Tetrix DC motor 60:1 revolution = 1440 encoder ticks
+        int currentstep = 0;
 
         waitForStart();
         while (opModeIsActive()) {
@@ -97,184 +87,24 @@ public class AutoRed extends LinearOpMode {
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                OmniTurn("Right",0.125,15);
-                OmniDrive("Forward",0.125,2500);
+                OmniTurn("Right", 0.125, 15);
+                OmniDrive("Forward", 0.125, 2500);
 
                 currentstep++;
             }
 
             if (currentstep == 2) {
-                //Turn launcher motor on
+                //park
                 telemetry.addData("inside currentstep:", currentstep);
                 telemetry.update();
 
-                Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                Launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                Launcher.setPower(1);
-                sleep(1000);
+                OmniDrive("Backward", 0.125, 500);
 
                 currentstep++;
             }
-
-            if (currentstep == 3) {
-                //Back up behind line
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                OmniTurn("Left",0.125,12);
-                OmniDrive("Backward",0.25,100);
-                OmniDrive("Left",0.25,400);  //600
-                OmniDrive("Backward",0.25,1000);
-
-                currentstep++;
-            }
-
-            if (currentstep == 4) {
-                //Launch rings
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                for (int i = 0; i < 3 && opModeIsActive(); i++) {
-                    telemetry.addData("Loop", i);
-                    telemetry.update();
-
-                    FlickPosition = (ARM_FLICKED);
-                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
-                    Flick.setPosition(FlickPosition);
-                    //Flick.setPower(1);
-                    sleep (500);
-                    //CR2.setPower(0);
-                    FlickPosition = (ARM_HOME);
-                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
-                    Flick.setPosition(FlickPosition);
-                    OmniTurn("Left",0.25,3);
-                    sleep (500);
-
-
-                    telemetry.addData("end of loop", "");
-                    telemetry.update();
-
-                }
-
-                currentstep++;
-            }
-
-            if (currentstep == 5) {
-                //Turn pickup on
-
-                /*Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                Pickup.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                Pickup.setPower(1);*/
-
-                currentstep++;
-            }
-
-            if (currentstep == 6){
-                //launch more rings
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-               /* for (int i = 0; i < 3 && opModeIsActive(); i++) {
-                    telemetry.addData("Loop", i);
-                    telemetry.update();
-
-                    FlickPosition = (ARM_FLICKED);
-                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
-                    Flick.setPosition(FlickPosition);
-                    //Flick.setPower(1);
-                    sleep (500);
-                    //CR2.setPower(0);
-                    FlickPosition = (ARM_HOME);
-                    FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
-                    Flick.setPosition(FlickPosition);
-                    sleep (500);
-
-
-                    telemetry.addData("end of loop", "");
-                    telemetry.update();
-
-                }
-                */
-
-                currentstep++;
-            }
-
-            if (currentstep == 7){
-                //turn off launcher and pickup
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                Launcher.setPower(0);
-
-                Pickup.setPower(0);
-
-                currentstep ++;
-            }
-
-            if (currentstep == 8){
-                //drive back to wall
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                //OmniTurn("Right",0.25,5);
-                OmniDrive("Backward",0.25,1320);
-
-                currentstep++;
-            }
-
-            if (currentstep == 9){
-                //Drive right, line up with wobble A
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                OmniDrive("Right",0.25,530);
-
-                currentstep ++;
-            }
-
-            if (currentstep == 10) {
-                //Drive forward and deliver to box A
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                OmniTurn("Right",0.125,20);
-                OmniDrive("Forward",0.125,2100);
-                OmniDrive("Backward",0.125,100);
-                OmniDrive("Left", 0.125, 800);
-                OmniDrive("Forward",0.125, 150);
-                currentstep++;
-            }
-
-            /*if (currentstep == 11){
-                //Park
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                OmniDrive("Backward",0.25,100);
-                OmniDrive("Left",0.25,400);
-
-                currentstep++;
-            }
-
-            if (currentstep == 12){
-                //Launching
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                currentstep++;
-            }
-
-            if (currentstep == 13){
-                //Actually park
-                telemetry.addData("inside currentstep:", currentstep);
-                telemetry.update();
-
-                OmniDrive("Forward",0.25,100);
-
-                currentstep++;
-            }*/
 
         }
+
 
     }
 
@@ -351,14 +181,13 @@ public class AutoRed extends LinearOpMode {
 
     }
 
-
-    public void OmniTurn(String DirT, double SpdT, int Deg) {
+    public void OmniTurn (String DirT,double SpdT, int Deg){
         //Ugh even more Math!!
         //number of ticks for a turn of 1 degree TicksPerDegree
         //if I want to turn more than 1 degree; multiple by number of degrees I want to turn
         //had to convert Rotate to int to use in setTargetPosition below
         int Rotate = (int) Math.round(Deg * TicksPerDegree);
-        telemetry.addData("Rotating", Rotate + " ticks or " +Deg + " degrees");
+        telemetry.addData("Rotating", Rotate + " ticks or " + Deg + " degrees");
         telemetry.update();
 
         TopLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -366,21 +195,21 @@ public class AutoRed extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        if(DirT.equals("Left")) {
+        if (DirT.equals("Left")) {
             TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
             BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
             BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         }
-        if(DirT.equals("Right")) {
+        if (DirT.equals("Right")) {
             TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
             TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
             BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
             BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         }
 
-        Rotate=Math.abs(Rotate);
+        Rotate = Math.abs(Rotate);
         TopLeft.setTargetPosition(Rotate);
         TopRight.setTargetPosition(Rotate);
         BackLeft.setTargetPosition(Rotate);
@@ -391,12 +220,11 @@ public class AutoRed extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        SpdT=Range.clip(SpdT, 0, 1);
+        SpdT = Range.clip(SpdT, 0, 1);
         TopLeft.setPower(SpdT);
         TopRight.setPower(SpdT);
         BackLeft.setPower(SpdT);
         BackRight.setPower(SpdT);
-
 
 
         while (opModeIsActive() && TopLeft.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
@@ -413,4 +241,5 @@ public class AutoRed extends LinearOpMode {
         BackRight.setPower(0);
 
     }
+
 }

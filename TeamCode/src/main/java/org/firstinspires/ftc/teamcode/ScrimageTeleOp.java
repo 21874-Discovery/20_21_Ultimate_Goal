@@ -37,8 +37,8 @@ public class ScrimageTeleOp extends OpMode {
     //double Angler_Power;
     double Pickup_Power;
     double Flick_Power;
-    public final static double ARM_FLICKED = 0.6;
-    public final static double ARM_HOME = 1; //sets the starting position for the servo. it will go to this position when robot starts
+    public final static double ARM_FLICKED = 0.8;
+    public final static double ARM_HOME = 0.2; //sets the starting position for the servo. it will go to this position when robot starts
     public final static double ARM_MIN_RANGE = 0;
     public final static double ARM_MAX_RANGE = 1;
     double FlickPosition = ARM_HOME;
