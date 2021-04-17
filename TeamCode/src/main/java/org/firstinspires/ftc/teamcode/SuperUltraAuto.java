@@ -157,6 +157,159 @@ public class SuperUltraAuto extends LinearOpMode {
                         OmniDrive("Forward", 0.25, 100);
                     }
 
+                case "One":
+                    if (currentstep == 0) {
+                        //deliver wobble 1 to B
+
+                        OmniTurn("Left", 0.25, 15);
+                        OmniDrive("Forward", 0.25, 1400);
+                    }
+
+                    if (currentstep == 1) {
+                        //align for power shots
+
+                        OmniTurn("Right", 0.25, 15);
+                        OmniDrive("Backward", 0.25, 200);
+                        Launcher.setPower(1);
+                        OmniDrive("Left", 0.25, 400);
+                    }
+
+                    if (currentstep == 2) {
+                        //for loop launch rings
+
+                        for (int i = 0; i < 3 && opModeIsActive(); i++) {
+                            telemetry.addData("Loop", i);
+                            telemetry.update();
+
+                            FlickPosition = (ARM_FLICKED);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            //Flick.setPower(1);
+                            sleep (500);
+                            //CR2.setPower(0);
+                            FlickPosition = (ARM_HOME);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            OmniTurn("Left",0.25,3);
+                            sleep (500);
+
+
+                            telemetry.addData("end of loop", "");
+                            telemetry.update();
+
+                        }
+
+                    }
+
+                    if (currentstep == 3) {
+                        //deliver second wobble
+
+                        Launcher.setPower(0);
+                        OmniDrive("Backward", 0.25, 1200);
+                        OmniDrive("Right", 0.25, 200);
+                        OmniTurn("Right", 0.25, 5);
+                        OmniDrive("Forward", 0.25, 1400);
+                    }
+
+                    if (currentstep == 4) {
+                        //pickup rings
+
+                        OmniTurn("Left", 0.25, 5);
+                        Pickup.setPower(1);
+                        OmniDrive("Backward", 0.25, 700);
+                        Pickup.setPower(0);
+                        Launcher.setPower(1);
+                        sleep(500);
+                    }
+
+                    if (currentstep == 5) {
+                        //launch rings at goal
+
+                        for (int i = 0; i < 3 && opModeIsActive(); i++) {
+                            telemetry.addData("Loop", i);
+                            telemetry.update();
+
+                            FlickPosition = (ARM_FLICKED);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            //Flick.setPower(1);
+                            sleep (500);
+                            //CR2.setPower(0);
+                            FlickPosition = (ARM_HOME);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            OmniTurn("Left",0.25,3);
+                            sleep (500);
+
+
+                            telemetry.addData("end of loop", "");
+                            telemetry.update();
+
+                        }
+
+                    }
+
+                    if (currentstep == 6) {
+                        //park
+
+                        Launcher.setPower(0);
+                        OmniDrive("Forward", 0.25, 200);
+                    }
+
+                case "Four":
+
+                    if (currentstep == 0) {
+                        //deliver wobble 1 to C
+
+                        OmniTurn("Left", 0.25, 65);
+                        OmniDrive("Forward", 0.25, 1700);
+                    }
+
+                    if (currentstep == 1) {
+                        //align for power shots
+
+                        OmniTurn("Left", 0.25, 25);
+                        OmniDrive("Backward", 0.25, 100);
+                        Launcher.setPower(1);
+                        OmniDrive("Left", 0.25, 500);
+                        OmniDrive("Backward", 0.25, 200);
+                    }
+
+                    if (currentstep == 2) {
+                        //for loop
+
+                        for (int i = 0; i < 3 && opModeIsActive(); i++) {
+                            telemetry.addData("Loop", i);
+                            telemetry.update();
+
+                            FlickPosition = (ARM_FLICKED);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            //Flick.setPower(1);
+                            sleep (500);
+                            //CR2.setPower(0);
+                            FlickPosition = (ARM_HOME);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            OmniTurn("Left",0.25,3);
+                            sleep (500);
+
+
+                            telemetry.addData("end of loop", "");
+                            telemetry.update();
+
+                        }
+
+                    }
+
+                    if (currentstep == 3) {
+                        //pickup
+
+                        OmniDrive("Right", 0.25, 400);
+                        Pickup.setPower(1);
+                        OmniDrive("Backward", 0.25, 400);
+                    }
+
             }
 
         }
