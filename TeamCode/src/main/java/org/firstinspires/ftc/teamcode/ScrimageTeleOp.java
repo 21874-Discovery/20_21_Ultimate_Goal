@@ -4,10 +4,8 @@
 //In gamepad2 right joystick controls the angler
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -188,7 +186,7 @@ public class ScrimageTeleOp extends OpMode {
         //I chose these buttons because it reminded me of a stoplight - which has red (B) as stop, green (A) as go
         //and yellow (Y) in the reverse for unjamming the jammed robot in the Pickup
         if (gamepad2.a) {
-            Pickup.setPower(0.5);
+            Pickup.setPower(1.0);
 
         }
 
@@ -201,8 +199,13 @@ public class ScrimageTeleOp extends OpMode {
         if (gamepad2.x) {
 
             Pickup.setPower(-0.5);
-
         }
+
+        if (gamepad2.y) {
+                Pickup.setPower(0.5);
+            }
+
+
 
     }
 

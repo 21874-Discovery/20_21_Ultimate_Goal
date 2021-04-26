@@ -366,7 +366,8 @@ public class NewAutonomous extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        if(DirT.equals("Left")) {
+
+       /* if(DirT.equals("Left")) {
             TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
             BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -378,7 +379,7 @@ public class NewAutonomous extends LinearOpMode {
             TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
             BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
             BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        }
+        }*/
 
         Rotate=Math.abs(Rotate);
         TopLeft.setTargetPosition(Rotate);

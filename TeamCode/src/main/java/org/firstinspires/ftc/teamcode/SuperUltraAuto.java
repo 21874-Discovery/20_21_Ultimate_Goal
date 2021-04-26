@@ -2,13 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -26,7 +24,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class SuperUltraAuto extends LinearOpMode {
 
     OpenCvInternalCamera phoneCam;
-    CameraTest.SkystoneDeterminationPipeline pipeline;
+    SkystoneDeterminationPipeline pipeline;
 
     DcMotor TopLeft;
     DcMotor TopRight;
@@ -61,9 +59,45 @@ public class SuperUltraAuto extends LinearOpMode {
 
     public void runOpMode() {
 
+        TopLeft = hardwareMap.dcMotor.get("TL");
+        TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        //   TopLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        TopRight = hardwareMap.dcMotor.get("TR");
+        TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        BackRight = hardwareMap.dcMotor.get("BR");
+        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        BackLeft = hardwareMap.dcMotor.get("BL");
+        BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        Launcher = hardwareMap.dcMotor.get("L");
+        Launcher.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Pickup =hardwareMap.dcMotor.get("P");
+        Pickup.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        Flick = hardwareMap.servo.get("F");
+        Flick.setDirection(Servo.Direction.FORWARD);
+        Flick_Power = 0.2;
+        Flick.setPosition(ARM_HOME);
+
+        Launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Pickup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        Launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Pickup.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        //Launcher.setTargetPosition(5000);
+        //Pickup.setTargetPosition(5000);
+
+
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new CameraTest.SkystoneDeterminationPipeline();
+        pipeline = new SkystoneDeterminationPipeline();
         phoneCam.setPipeline(pipeline);
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -79,26 +113,37 @@ public class SuperUltraAuto extends LinearOpMode {
                 phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
         });
+        telemetry.addData("Analysis", pipeline.getAnalysis());
+        telemetry.addData("Position", pipeline.position);
+        telemetry.update();
 
+        // Don't burn CPU cycles busy-looping in this sample
+        //sleep(50);
+        if(rings==null) {
+            rings = String.valueOf(pipeline.position);
+        }
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Analysis", pipeline.getAnalysis());
-            //telemetry.addData("Position", pipeline.position);
+
+
+            rings="NONE";
+            telemetry.addData("rings:",rings);
             telemetry.update();
-
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
-
-            rings = "4";
-
             switch (rings) {
-                case "Zero":
+                case "NONE":
+                    telemetry.addData("case:","NONE");
+                    telemetry.update();
+
                     if (currentstep == 0) {
                         //Deliver wobble to box A
+                        telemetry.addData("inside case zero", "");
+                        telemetry.update();
 
                         OmniTurn("Left", 0.25,60);
                         OmniDrive("Forward", 0.125, 2000);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 1) {
@@ -107,8 +152,9 @@ public class SuperUltraAuto extends LinearOpMode {
                         OmniTurn("Left", 0.25, 30);
                         OmniDrive("Backward", 0.25, 500);
                         Launcher.setPower(1);
-                        OmniDrive("Left", 0.25, 1600);
+                        OmniDrive("Left", 0.25, 800);
 
+                        currentstep++;
                     }
 
                     if (currentstep == 2){
@@ -127,7 +173,6 @@ public class SuperUltraAuto extends LinearOpMode {
                             FlickPosition = (ARM_HOME);
                             FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                             Flick.setPosition(FlickPosition);
-                            OmniTurn("Left",0.25,3);
                             sleep (500);
 
 
@@ -136,16 +181,19 @@ public class SuperUltraAuto extends LinearOpMode {
 
                         }
 
+                        currentstep++;
                     }
 
                     if (currentstep == 3) {
                         //deliver second wobble
 
                         Launcher.setPower(0);
-                        OmniDrive("Backward", 0.25, 1600);
-                        OmniDrive("Right", 0.25, 400);
+                        OmniDrive("Backward", 0.25, 1800);
+                        OmniDrive("Left", 0.25, 500);
                         OmniTurn("Right", 0.25, 35);
                         OmniDrive("Forward", 0.25, 2000);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 4) {
@@ -155,23 +203,29 @@ public class SuperUltraAuto extends LinearOpMode {
                         OmniDrive("Backward", 0.25, 100);
                         OmniDrive("Left", 0.25, 400);
                         OmniDrive("Forward", 0.25, 100);
+
+                        currentstep++;
                     }
 
-                case "One":
+                case "ONE":
+                    telemetry.addData("inside case one", "");
+                    telemetry.update();
                     if (currentstep == 0) {
                         //deliver wobble 1 to B
 
-                        OmniTurn("Left", 0.25, 15);
-                        OmniDrive("Forward", 0.25, 1400);
+                        OmniTurn("Left", 0.25, 90);
+                        OmniDrive("Forward", 0.25, 3000);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 1) {
                         //align for power shots
 
-                        OmniTurn("Right", 0.25, 15);
-                        OmniDrive("Backward", 0.25, 200);
                         Launcher.setPower(1);
-                        OmniDrive("Left", 0.25, 400);
+                        OmniDrive("Backward", 0.25, 1400);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 2) {
@@ -190,7 +244,6 @@ public class SuperUltraAuto extends LinearOpMode {
                             FlickPosition = (ARM_HOME);
                             FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                             Flick.setPosition(FlickPosition);
-                            OmniTurn("Left",0.25,3);
                             sleep (500);
 
 
@@ -199,30 +252,22 @@ public class SuperUltraAuto extends LinearOpMode {
 
                         }
 
+                        currentstep++;
                     }
 
                     if (currentstep == 3) {
-                        //deliver second wobble
-
-                        Launcher.setPower(0);
-                        OmniDrive("Backward", 0.25, 1200);
-                        OmniDrive("Right", 0.25, 200);
-                        OmniTurn("Right", 0.25, 5);
-                        OmniDrive("Forward", 0.25, 1400);
-                    }
-
-                    if (currentstep == 4) {
                         //pickup rings
 
                         OmniTurn("Left", 0.25, 5);
                         Pickup.setPower(1);
                         OmniDrive("Backward", 0.25, 700);
-                        Pickup.setPower(0);
                         Launcher.setPower(1);
                         sleep(500);
+
+                        currentstep++;
                     }
 
-                    if (currentstep == 5) {
+                    if (currentstep == 4) {
                         //launch rings at goal
 
                         for (int i = 0; i < 3 && opModeIsActive(); i++) {
@@ -247,36 +292,94 @@ public class SuperUltraAuto extends LinearOpMode {
 
                         }
 
+                        currentstep++;
+                    }
+
+                    if (currentstep == 5) {
+                        //deliver second wobble
+
+                        Launcher.setPower(0);
+                        Pickup.setPower(0);
+                        OmniDrive("Backward", 0.25, 1600);
+                        OmniDrive("Left", 0.25, 500);
+                        OmniTurn("Right", 0.25, 5);
+                        OmniDrive("Forward", 0.25, 3000);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 6) {
                         //park
 
-                        Launcher.setPower(0);
                         OmniDrive("Forward", 0.25, 200);
+
+                        currentstep++;
                     }
 
-                case "Four":
+                case "FOUR":
 
+                    telemetry.addData("inside case four", "");
+                    telemetry.update();
                     if (currentstep == 0) {
                         //deliver wobble 1 to C
 
-                        OmniTurn("Left", 0.25, 65);
-                        OmniDrive("Forward", 0.25, 1700);
+                        OmniTurn("Left", 0.1, 70);
+                        OmniDrive("Forward", 0.25, 3200);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 1) {
                         //align for power shots
 
-                        OmniTurn("Left", 0.25, 25);
+                        OmniTurn("Left", 0.25, 5);
                         OmniDrive("Backward", 0.25, 100);
                         Launcher.setPower(1);
                         OmniDrive("Left", 0.25, 500);
-                        OmniDrive("Backward", 0.25, 200);
+                        OmniDrive("Backward", 0.25, 2000);
+
+                        currentstep++;
                     }
 
                     if (currentstep == 2) {
                         //for loop
+
+                        for (int i = 0; i < 3 && opModeIsActive(); i++) {
+                            telemetry.addData("Loop", i);
+                            telemetry.update();
+
+                            FlickPosition = (ARM_FLICKED);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                            //Flick.setPower(1);
+                            sleep (300);
+                            //CR2.setPower(0);
+                            FlickPosition = (ARM_HOME);
+                            FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+                            Flick.setPosition(FlickPosition);
+                           // OmniTurn("Left",0.25,3);
+                            sleep (300);
+
+
+                            telemetry.addData("end of loop", "");
+                            telemetry.update();
+
+                        }
+
+                        currentstep++;
+                    }
+
+                    if (currentstep == 3) {
+                        //pickup
+
+                        Pickup.setPower(1);
+                        OmniDrive("Backward", 0.25, 200);
+
+                        currentstep++;
+                    }
+
+                    if (currentstep == 4) {
+                        //launch
 
                         for (int i = 0; i < 3 && opModeIsActive(); i++) {
                             telemetry.addData("Loop", i);
@@ -291,7 +394,6 @@ public class SuperUltraAuto extends LinearOpMode {
                             FlickPosition = (ARM_HOME);
                             FlickPosition = Range.clip(FlickPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
                             Flick.setPosition(FlickPosition);
-                            OmniTurn("Left",0.25,3);
                             sleep (500);
 
 
@@ -300,14 +402,29 @@ public class SuperUltraAuto extends LinearOpMode {
 
                         }
 
+                        currentstep++;
                     }
 
-                    if (currentstep == 3) {
-                        //pickup
+                    if (currentstep == 5) {
+                        //deliver woble 2
 
-                        OmniDrive("Right", 0.25, 400);
-                        Pickup.setPower(1);
-                        OmniDrive("Backward", 0.25, 400);
+                        Launcher.setPower(0);
+                        Pickup.setPower(0);
+                        OmniDrive("Left", 0.25, 1600);
+                        OmniDrive("Backward", 0.25, 1000);
+                        OmniDrive("Right", 0.25, 800);
+                        OmniTurn("Right", 0.25, 20);
+                        OmniDrive("Forward", 0.25, 3200);
+
+                        currentstep++;
+                    }
+
+                    if (currentstep == 6) {
+                        //park
+
+                        OmniDrive("Backward", 0.25, 1200);
+
+                        currentstep ++;
                     }
 
             }
@@ -315,7 +432,7 @@ public class SuperUltraAuto extends LinearOpMode {
         }
 
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////
     public void OmniDrive(String Dir, double Spd, int Dist) {
         telemetry.addData("Direction", Dir);
         telemetry.update();
@@ -404,26 +521,19 @@ public class SuperUltraAuto extends LinearOpMode {
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        switch (DirT) {
-            case "Left":
-                TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-                TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-                BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-                BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        if(DirT.equals("Left")) {
+            TopLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            TopRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            case "Right":
-                TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-                TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
-                BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-                BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-
-            default:
-                telemetry.addData("Invalid Direction", DirT);
-                telemetry.update();
-                return;
         }
-
-
+        if(DirT.equals("Right")) {
+            TopLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+            TopRight.setDirection(DcMotorSimple.Direction.FORWARD);
+            BackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+            BackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
 
         Rotate=Math.abs(Rotate);
         TopLeft.setTargetPosition(Rotate);
@@ -458,7 +568,7 @@ public class SuperUltraAuto extends LinearOpMode {
         BackRight.setPower(0);
 
     }
-
+//**********************************************************************************************
     public static class SkystoneDeterminationPipeline extends OpenCvPipeline
     {
         /*
@@ -480,7 +590,7 @@ public class SuperUltraAuto extends LinearOpMode {
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(181,98);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(220,110);
 
         static final int REGION_WIDTH = 35;
         static final int REGION_HEIGHT = 25;
@@ -504,7 +614,7 @@ public class SuperUltraAuto extends LinearOpMode {
         int avg1;
 
         // Volatile since accessed by OpMode thread w/o synchronization
-        private volatile CameraTest.SkystoneDeterminationPipeline.RingPosition position = CameraTest.SkystoneDeterminationPipeline.RingPosition.FOUR;
+        private volatile SkystoneDeterminationPipeline.RingPosition position = SkystoneDeterminationPipeline.RingPosition.FOUR;
 
         /*
          * This function takes the RGB frame, converts to YCrCb,
@@ -538,13 +648,13 @@ public class SuperUltraAuto extends LinearOpMode {
                     BLUE, // The color the rectangle is drawn in
                     2); // Thickness of the rectangle lines
 
-            position = CameraTest.SkystoneDeterminationPipeline.RingPosition.FOUR; // Record our analysis
+            position = SkystoneDeterminationPipeline.RingPosition.FOUR; // Record our analysis
             if(avg1 > FOUR_RING_THRESHOLD){
-                position = CameraTest.SkystoneDeterminationPipeline.RingPosition.FOUR;
+                position = SkystoneDeterminationPipeline.RingPosition.FOUR;
             }else if (avg1 > ONE_RING_THRESHOLD){
-                position = CameraTest.SkystoneDeterminationPipeline.RingPosition.ONE;
+                position = SkystoneDeterminationPipeline.RingPosition.ONE;
             }else{
-                position = CameraTest.SkystoneDeterminationPipeline.RingPosition.NONE;
+                position = SkystoneDeterminationPipeline.RingPosition.NONE;
             }
 
             Imgproc.rectangle(
